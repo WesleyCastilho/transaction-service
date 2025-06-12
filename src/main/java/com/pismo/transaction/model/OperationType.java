@@ -19,6 +19,11 @@ public class OperationType {
     public OperationType() {
     }
 
+
+    public boolean isDebit(){
+        return this.id == 1 || this.id == 2 || this.id == 3;
+    }
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

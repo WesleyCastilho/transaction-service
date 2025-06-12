@@ -20,13 +20,26 @@ public class TransactionService {
     }
 
     public Transaction save(TransactionDTO dto) {
-        Account account = accountRepository.findById(dto.accountId).orElseThrow();
-        OperationType operationType = operationTypeRepository.findById(dto.operationTypeId).orElseThrow();
+        Account account = accountRepository.findById(dto.accountId)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + dto.accountId));
+
+        OperationType operationType = operationTypeRepository.findById(dto.operationTypeId)
+                .orElseThrow(() -> new RuntimeException("Tipo de operação não encontrado: " + dto.operationTypeId));
 
         Transaction tx = new Transaction();
         tx.setAccount(account);
         tx.setOperationType(operationType);
         tx.setAmount(dto.amount);
+
+        if (tx.getOperationType().isDebit()){
+            if (account.getAvailableCreditLimit() < tx.getAmount()) {
+                throw new RuntimeException("Limite de creditos insuficiente");
+            }
+            account.setAvailableCreditLimit(account.getAvailableCreditLimit() - tx.getAmount());
+        } else {
+            account.setAvailableCreditLimit(account.getAvailableCreditLimit() + tx.getAmount());
+        }
+
         return transactionRepository.save(tx);
     }
 }

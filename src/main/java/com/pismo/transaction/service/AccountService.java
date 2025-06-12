@@ -13,6 +13,9 @@ public class AccountService {
     }
 
     public Account save(Account account) {
+        if (account.getAvailableCreditLimit() == null){ //Considerando contas criadas antes, sem saldo.
+            account.setAvailableCreditLimit(100.00); //Refatorar para BIG DECIMAL
+        }
         return repository.save(account);
     }
 
