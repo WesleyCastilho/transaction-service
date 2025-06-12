@@ -38,7 +38,7 @@ Serviço de transações financeiras desenvolvido com **Spring Boot**, **Java 17
 ### Passos para execução
 
 1. Clone o repositório:
-   git clone https://github.com/seu-usuario/transaction-service.git
+   git clone https://github.com/wesleycastilho/transaction-service.git
    cd transaction-service
 
 2. Dê permissão ao script e execute:
